@@ -14,7 +14,7 @@ custom_fast = input(21, title="Fast Period")
 custom_slow = input(55, title="Slow Period")
 custom_signal = input(21, title="Signal Period")
 
-offset = input(0.7, step=0.05, minval=0.1, maxval=1)
+offset = input(0.9, step=0.05, minval=0.1, maxval=1)
 sigma = input(6, step=1, minval=1)
 
 def_fast = 34
