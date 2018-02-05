@@ -1,0 +1,38 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: M9MBLWAC4puDxuqs4KfgSa216q1chLuaps
+//contact: bucket@mailbox.org
+
+study(title="Chaikin Money Flow", shorttitle="Chaikin Money Flow", precision=1)
+length = input(8, title="Period", step=1, minval=1)
+signallen = input(21, title="Signal", step=1, minval=1)
+smooth = input(4, title="Hull Smoothing", step=1, minval=0)
+usealma = input(true, type=bool, title="Signal uses ALMA?(EMA)")
+
+hullma(_src, _length)=>
+    _return = wma((2 * wma(_src, _length / 2)) - wma(_src, _length), round(sqrt(_length)))
+
+mfm = ((close - low) - (high - close)) / (high - low)
+mfv = mfm * sum(volume, length)
+cmf = sum(mfv, length) / sum(volume, length)
+cmf_line = smooth > 0 ? hullma(cmf, smooth) : cmf
+signal = usealma ? alma(cmf, signallen, 0.9, 4) : ema(cmf, signallen)
+
+crimson = #DC143C
+steelblue = #4682B4
+forestgreen = #228B22
+darkgray = #A9A9A9
+darkorange = #FF8C00
+cyan = #00FFFF
+orange_red = #FF4500
+
+isnegative = cmf_line < 0
+ispositive = cmf_line >= 0
+xcolor = cmf_line < 0 ? crimson : forestgreen
+
+hline(0, 'Zero', linestyle=dashed, linewidth=1, color=#7B68EE, editable=false)
+plot(cmf_line, color=xcolor, transp=0, linewidth=2, title="CMF")
+plot(signal, color=orange, transp=0, linewidth=2, title="CMF")
