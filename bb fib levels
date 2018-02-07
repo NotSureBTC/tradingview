@@ -6,7 +6,7 @@
 //Litecoin: M9MBLWAC4puDxuqs4KfgSa216q1chLuaps
 //contact: bucket@mailbox.org
 
-study("BB Fib ratios [ALMA]",shorttitle="BB Fib ratios [ALMA]",overlay=true)
+study("BB Fib levels [ALMA]",shorttitle="BB Fib levels [ALMA]",overlay=true)
 length = input(21, minval = 1, step = 1)
 
 fibratio1 = input(defval=1.618, title="Fibonacci Ratio 1")
