@@ -1,0 +1,61 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: M9MBLWAC4puDxuqs4KfgSa216q1chLuaps
+//contact: bucket@mailbox.org
+
+study("Fibonacci Levels",shorttitle="Fibonacci Levels",overlay=true)
+
+length=input(21, minval=1, step=1)
+
+fiblevel1 = input(1.618, title="Fibonacci Level 1")
+fiblevel2 = input(2.618, title="Fibonacci Level 2")
+fiblevel3 = input(3.618, title="Fibonacci Level 3")
+fiblevel4 = input(5.618, title="Fibonacci Level 4")
+usevwma = input(false, title="Use VWMA as base?(Tenkan)")
+offset = input(0.7, step=0.05, minval=0, maxval=1)
+sigma = input(4, step=1, minval=1)
+smooth = input(9, title="Hull smooth (0 = off)", step=1, minval=0)
+
+tenkanSen = avg(lowest(length), highest(length))
+baseprice = usevwma ? vwma(close, length) : tenkanSen
+
+smoothon = smooth > 0 and usevwma
+
+factor = abs(atr(length))
+
+hullma(_src, _length)=>
+    _return = wma((2 * wma(_src, _length / 2)) - wma(_src, _length), round(sqrt(_length)))
+
+color1 = #00FFFF
+color2 = #46D400
+color3 = #AA3800
+color4 = #7F007F
+
+base1 = factor * fiblevel1
+base2 = factor * fiblevel2
+base3 = factor * fiblevel3
+base4 = factor * fiblevel4
+
+top4 = smoothon ? hullma(baseprice + base4, smooth) : baseprice + base4
+top3 = smoothon ? hullma(baseprice + base3, smooth) : baseprice + base3
+top2 = smoothon ? hullma(baseprice + base2, smooth) : baseprice + base2
+top1 = smoothon ? hullma(baseprice + base1, smooth) : baseprice + base1
+bottom1 = smoothon ? hullma(baseprice - base1, smooth) : baseprice - base1
+bottom2 = smoothon ? hullma(baseprice - base2, smooth) : baseprice - base2
+bottom3 = smoothon ? hullma(baseprice - base3, smooth) : baseprice - base3
+bottom4 = smoothon ? hullma(baseprice - base4, smooth) : baseprice - base4
+
+t4= plot(top4, transp=0, title="Top 4", color=color4)
+t3= plot(top3, transp=20, title="Top 3", color=color3)
+t2= plot(top2, transp=40, title="Top 2", color=color2)
+t1= plot(top1, transp=60, title="Top 1", color=color1)
+
+b1= plot(bottom1, transp=60, title="Bottom 1", color=color1)
+b2= plot(bottom2, transp=40, title="Bottom 2", color=color2)
+b3= plot(bottom3, transp=20, title="Bottom 3", color=color3)
+b4= plot(bottom4, transp=0, title="Bottom 4", color=color4)
+
+plot(baseprice, style=circles, title="Base Price", color=purple, transp=0, linewidth=2)
