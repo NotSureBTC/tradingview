@@ -16,7 +16,6 @@ fiblevel3 = input(3.618, title="Fibonacci Level 3")
 fiblevel4 = input(5.618, title="Fibonacci Level 4")
 usevwma = input(false, title="Use VWMA as base?(Tenkan)")
 smooth = input(9, title="Hull smooth (0 = off)", step=1, minval=0)
-
 tenkanSen = avg(lowest(length), highest(length))
 baseprice = usevwma ? vwma(close, length) : tenkanSen
 
@@ -27,10 +26,11 @@ factor = abs(atr(length))
 hullma(_src, _length)=>
     _return = wma((2 * wma(_src, _length / 2)) - wma(_src, _length), round(sqrt(_length)))
 
-color1 = #00FFFF
-color2 = #46D400
-color3 = #AA3800
-color4 = #7F007F
+basecolor = #F5F5F5
+color1 = #DCB9F7
+color2 = #7CE9F9
+color3 = #77FC3F
+color4 = #FF4400
 
 base1 = factor * fiblevel1
 base2 = factor * fiblevel2
@@ -46,14 +46,14 @@ bottom2 = smoothon ? hullma(baseprice - base2, smooth) : baseprice - base2
 bottom3 = smoothon ? hullma(baseprice - base3, smooth) : baseprice - base3
 bottom4 = smoothon ? hullma(baseprice - base4, smooth) : baseprice - base4
 
-t4= plot(top4, transp=0, title="Top 4", color=color4)
-t3= plot(top3, transp=20, title="Top 3", color=color3)
-t2= plot(top2, transp=40, title="Top 2", color=color2)
-t1= plot(top1, transp=60, title="Top 1", color=color1)
+t4= plot(top4, transp=60, title="Top 4", color=color4)
+t3= plot(top3, transp=45, title="Top 3", color=color3)
+t2= plot(top2, transp=30, title="Top 2", color=color2)
+t1= plot(top1, transp=0, title="Top 1", color=color1)
 
-b1= plot(bottom1, transp=60, title="Bottom 1", color=color1)
-b2= plot(bottom2, transp=40, title="Bottom 2", color=color2)
-b3= plot(bottom3, transp=20, title="Bottom 3", color=color3)
-b4= plot(bottom4, transp=0, title="Bottom 4", color=color4)
+b1= plot(bottom1, transp=0, title="Bottom 1", color=color1)
+b2= plot(bottom2, transp=30, title="Bottom 2", color=color2)
+b3= plot(bottom3, transp=45, title="Bottom 3", color=color3)
+b4= plot(bottom4, transp=60, title="Bottom 4", color=color4)
 
-plot(baseprice, style=line, title="Base Price", color=purple, transp=0, linewidth=2)
+plot(baseprice, style=line, title="Base Price", color=basecolor, transp=0, linewidth=1)
