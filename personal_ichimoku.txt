@@ -62,14 +62,14 @@ chikouline = alma(hl2, chikouSen, 0.2, 1)
 senkouA = avg(tenkan, kijun)
 senkouB = donchian(senkou)
 
-lightgreen = #90EE90
-price = #FF00FF
-senkoub_color = #FA8072
-spanColor = senkouA>=senkouB ? lightgreen : senkoub_color
+bear = #DB7093
+bull = #98FB98
+bearcloud = #DB7093
+bullcloud = #98FB98
 
-p1 = plot(senkouA, title = 'Senkou Span A', offset = displacement, color=spanColor, transp=35, linewidth=1, editable=false)
-p2 = plot(senkouB, title = 'Senkou Span B', offset = displacement, color=spanColor, transp=35, linewidth=1, editable=false)
-fill(p1, p2, color = senkouA > senkouB ? lightgreen : senkoub_color, transp=85, title="Senkou fill", editable=false)
+p1 = plot(senkouA, title = 'Senkou Span A', offset = displacement, color=bull, transp=60, linewidth=1, editable=false)
+p2 = plot(senkouB, title = 'Senkou Span B', offset = displacement, color=bear, transp=60, linewidth=1, editable=false)
+fill(p1, p2, color = senkouA > senkouB ? bullcloud : bearcloud, transp=80, title="Senkou fill", editable=false)
 
 plot(chikou_d ? chikouline : na, title='Chikou Span', linewidth=2, offset=-displacement, color=darkorange, transp=0, editable=true)
 
