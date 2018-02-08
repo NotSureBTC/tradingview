@@ -15,8 +15,6 @@ fiblevel2 = input(2.618, title="Fibonacci Level 2")
 fiblevel3 = input(3.618, title="Fibonacci Level 3")
 fiblevel4 = input(5.618, title="Fibonacci Level 4")
 usevwma = input(false, title="Use VWMA as base?(Tenkan)")
-offset = input(0.7, step=0.05, minval=0, maxval=1)
-sigma = input(4, step=1, minval=1)
 smooth = input(9, title="Hull smooth (0 = off)", step=1, minval=0)
 
 tenkanSen = avg(lowest(length), highest(length))
