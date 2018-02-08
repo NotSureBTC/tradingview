@@ -56,4 +56,4 @@ b2= plot(bottom2, transp=40, title="Bottom 2", color=color2)
 b3= plot(bottom3, transp=20, title="Bottom 3", color=color3)
 b4= plot(bottom4, transp=0, title="Bottom 4", color=color4)
 
-plot(baseprice, style=circles, title="Base Price", color=purple, transp=0, linewidth=2)
+plot(baseprice, style=line, title="Base Price", color=purple, transp=0, linewidth=2)
