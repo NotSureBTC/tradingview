@@ -6,7 +6,7 @@
 //Litecoin: M9MBLWAC4puDxuqs4KfgSa216q1chLuaps
 //contact: bucket@mailbox.org
 
-study(title="Klinger KAMA", precision=0)
+study(title="Klinger KAMA", shorttitle="Klinger KAMA [Yield]", precision=0)
 settings = input(false, type=bool, title="Use 34,55,13?")
 showxo = input(false, type=bool, title="Show 0 crossings?")
 showhist = input(false, type=bool, title="Show histogram?")
