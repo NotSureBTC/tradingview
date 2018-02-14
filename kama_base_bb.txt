@@ -6,7 +6,10 @@
 //Litecoin: M9MBLWAC4puDxuqs4KfgSa216q1chLuaps
 //contact: bucket@mailbox.org
 
-study("Kaufman MA", overlay=true, precision=0)
+study("Kaufman MA+BB", overlay=true, precision=0)
+showbb = input(false, title="Display the BB?")
+usekama = input(false, title="Use KAMA for BB?")
+
 //Default Formula values
 erp = input(10, title="Efficiency Ratio Periods", step=1, minval=1)
 fastMA = input(2, step=1, minval=1, title="Fast Period")
@@ -15,9 +18,24 @@ slowMA = input(30, step=1, minval=1, title="Slow Period")
 change = abs(close-close[erp])
 volatility = sum(abs(close - close[1]), erp)
 er = change/volatility
-//End ER
+
 fastAlpha = (2/(fastMA+1))
 slowAlpha = (2/(slowMA+1))
 sc = pow( er * (fastAlpha - slowAlpha ) + slowAlpha, 2)
 kama = nz(kama[1]) + sc * (close - nz(kama[1]))
-plot(kama, style=line, linewidth=2, color=green, transp=0 )
+
+//====BB====
+bbcolor = usekama ? fuchsia : silver
+bb_mid = usekama ? kama : sma(close, 20)
+dev = usekama ? 2.0 * stdev(close, 20) : 2.0 * stdev(close, 20)
+bb_top = bb_mid + dev
+bb_low = bb_mid - dev
+//====BB====
+
+plot(showbb ? na : kama, style=line, linewidth=2, color=yellow, transp=0 )
+
+//display_bb
+plot(showbb ? bb_top : na, color = bbcolor, linewidth=2, editable=true, transp=0, title="BB Top")
+plot(showbb ? bb_mid : na, color = bbcolor, linewidth=2, editable=true, transp=0, title="BB Mid")
+plot(showbb ? bb_low : na, color = bbcolor, linewidth=2, editable=true, transp=0, title="BB Low")
+//
