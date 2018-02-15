@@ -26,10 +26,10 @@ slowp = settings ? def_slow : custom_slow
 signalp = settings ? def_signal : custom_signal
 
 //KAMA
-kama(_src, _len)=>
-    erp = 10
+kama(_src)=>
+    erp = 8
     fastMA = 2
-    slowMA = _len
+    slowMA = 30
     change = abs(_src - _src[erp])
     volatility = sum(abs(_src - _src[1]), erp)
     er = change/volatility
@@ -41,7 +41,7 @@ kama(_src, _len)=>
 
 sv = change(close,1) > 0 ? volume : -volume
 fast = alma(sv, fastp, offset, sigma)
-slow = kama(sv, slowp)
+slow = kama(sv)
 kvo_line = fast - slow
 sig = alma(kvo_line, signalp, offset, sigma)
 hist = kvo_line - sig
