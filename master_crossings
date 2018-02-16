@@ -1,0 +1,53 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: M9MBLWAC4puDxuqs4KfgSa216q1chLuaps
+//contact: bucket@mailbox.org
+
+study(title="Master Crossings", shorttitle="Master Crossings", overlay=true, precision=0)
+xo1 = input(true, title="Show Close/SMA200")
+xo2 = input(false, title="Show Close/SMA250")
+xo3 = input(false, title="Show SMA50/SMA200")
+xo4 = input(false, title="Show SMA20/SMA200")
+xo5 = input(false, title="Show SMA50/SMA100")
+usealma = input(false, title="Use ALMA?(SMA)")
+
+price = close
+
+offset = input(0.9, step=0.05, minval=0)
+sigma = input(2, step=1, minval=1)
+
+ma20 = usealma ? alma(price, 20, offset, sigma) : sma(price, 20)
+ma50 = usealma ? alma(price, 50, offset, sigma) : sma(price, 50)
+ma100 = usealma ? alma(price, 100, offset, sigma) : sma(price, 100)
+ma200 = usealma ? alma(price, 200, offset, sigma) : sma(price, 200)
+ma250 = usealma ? alma(price, 250, offset, sigma) : sma(price, 250)
+
+ma1color = #1FBF00
+ma2color = #C8AD00
+ma3color = #D20015
+ma4color = #CB00DB
+ma5color = #0009E5
+
+plot(ma20, title="MA 20", linewidth=2, color=ma1color, editable=true, transp=0)
+plot(ma50, title="MA 50", linewidth=2, color=ma2color, editable=true, transp=0)
+plot(ma100, title="MA 100", linewidth=2, color=ma3color, editable=true, transp=0)
+plot(ma200, title="MA 200", linewidth=2, color=ma4color, editable=true, transp=0)
+plot(ma250, title="MA 250", linewidth=2, color=ma5color, editable=true, transp=0)
+
+plotshape(xo1 ? crossover(close, ma200) : na, style=shape.triangleup, location=location.belowbar, color=ma4color, text="1", transp=0, editable=false, size=size.tiny, title="XO 1")
+plotshape(xo1 ? crossunder(close, ma200) : na, style=shape.triangledown, location=location.abovebar, color=ma4color, text="1", transp=0, editable=false, size=size.tiny, title="XO 1")
+
+plotshape(xo2 ? crossover(close, ma250) : na, style=shape.triangleup, location=location.belowbar, color=ma5color, text="2", transp=0, editable=false, size=size.tiny, title="XO 2")
+plotshape(xo2 ? crossunder(close, ma250) : na, style=shape.triangledown, location=location.abovebar, color=ma5color, text="2", transp=0, editable=false, size=size.tiny, title="XO 2")
+
+plotshape(xo3 ? crossover(ma50, ma200) : na, style=shape.triangleup, location=location.belowbar, color=ma4color, text="3", transp=0, editable=false, size=size.tiny, title="XO 3")
+plotshape(xo3 ? crossunder(ma50, ma200) : na, style=shape.triangledown, location=location.abovebar, color=ma4color, text="3", transp=0, editable=false, size=size.tiny, title="XO 3")
+
+plotshape(xo4 ? crossover(ma20, ma200) : na, style=shape.triangleup, location=location.belowbar, color=ma4color, text="4", transp=0, editable=false, size=size.tiny, title="XO 4")
+plotshape(xo4 ? crossunder(ma20, ma200) : na, style=shape.triangledown, location=location.abovebar, color=ma4color, text="4", transp=0, editable=false, size=size.tiny, title="XO 4")
+
+plotshape(xo5 ? crossover(ma50, ma100) : na, style=shape.triangleup, location=location.belowbar, color=ma3color, text="5", transp=0, editable=false, size=size.tiny, title="XO 5")
+plotshape(xo5 ? crossunder(ma50, ma100) : na, style=shape.triangledown, location=location.abovebar, color=ma3color, text="5", transp=0, editable=false, size=size.tiny, title="XO 5")
