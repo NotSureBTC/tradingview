@@ -6,7 +6,7 @@
 //Litecoin: M9MBLWAC4puDxuqs4KfgSa216q1chLuaps
 //contact: bucket@mailbox.org
 
-study(title="Master Crossings", shorttitle="Master Crossings", overlay=true, precision=0)
+study(title="Daily Crossings", shorttitle="Daily Crossings", overlay=true, precision=0)
 xo1 = input(true, title="Show Close/SMA200")
 xo2 = input(false, title="Show Close/SMA250")
 xo3 = input(false, title="Show SMA50/SMA200")
