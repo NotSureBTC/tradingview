@@ -7,7 +7,7 @@ If you find them useful please consider making a donation, thank you.
 ```
 Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
 
-Litecoin: M9MBLWAC4puDxuqs4KfgSa216q1chLuaps
+Litecoin: 33932ckE7i3oAQZxxSgLcvmbn8RAgTc2tk
 ```
 
 MIT License
