@@ -10,7 +10,6 @@
 study("UltrafastParrot TSI", shorttitle="Parrot TSI", precision=1)
 short = input(title="Short ALMA Length", type=integer, defval=5)
 long = input(title="Long ALMA Length", type=integer, defval=21)
-signal = input(title="Signal Length", type=integer, defval=13)
 showhist = input(false, type=bool, title="Show Histogram?")
 shapes = input(false, type=bool, title="Show signal crossings?")
 offset = input(0.85, step=0.05, minval=0.5, title="Fast Offset")
