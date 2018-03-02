@@ -1,0 +1,35 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: 33932ckE7i3oAQZxxSgLcvmbn8RAgTc2tk
+//ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
+//contact: bucket@mailbox.org
+
+study(title="ALMA Crossings", shorttitle="ALMA Crossings", overlay=true, precision=1)
+length0 = input(5)
+length1 = input(21)
+length2 = input(55)
+length3 = input(144)
+offset = input(0.75, step=0.05, minval=0.05)
+sigma = input(4, step=1, minval=1)
+masterxo = input(false, title="Show crossings?")
+
+price = close
+
+ma0 = alma(price, length0, offset, sigma)
+ma1 = alma(price, length1, offset, sigma)
+ma2 = alma(price, length2, offset, sigma)
+ma3 = alma(price, length3, offset, sigma)
+
+plot(ma0, color=aqua, transp=0, linewidth=2)
+plot(ma1, color=yellow, transp=0, linewidth=2)
+plot(ma2, color=red, transp=0, linewidth=2)
+plot(ma3, color=fuchsia, transp=0, linewidth=2)
+
+shortxo = crossunder(ma0, ma1)
+longxo = crossover(ma0, ma1)
+
+plotshape(masterxo and shortxo, style=shape.diamond, color=#FF0000, transp=0, editable=false, size=size.tiny, title="Short", location=location.abovebar)
+plotshape(masterxo and longxo, style=shape.diamond, color=#00FF00, transp=0, editable=false, size=size.tiny, title="Long", location=location.belowbar)
