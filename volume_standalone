@@ -32,10 +32,10 @@ sc = pow( er * (fastAlpha - slowAlpha ) + slowAlpha, 2)
 kama = nz(kama[1]) + sc * (src - nz(kama[1]))
 //KAMA
 
-lowvol = #FFA07A
-hivol = #ADD8E6
-kamacolor = #FF4500
-almacolor = #228B22
+lowvol = #DC143C
+hivol = #228B22
+kamacolor = #CB18C4
+almacolor = #491CBB
 palette = change(volume, 1) >= 0 ? hivol : lowvol
 
 plot(src, style=histogram, linewidth=4,color=palette, transp=30)
