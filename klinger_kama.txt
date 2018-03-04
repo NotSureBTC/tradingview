@@ -1,4 +1,4 @@
-//@version=2
+//@version=3
 //The files in this repository are created by me and provided under the MIT License
 //located at https://github.com/yield65/tradingview/blob/master/LICENSE
 //If you find them useful please consider making a donation, thank you.
@@ -31,7 +31,8 @@ kama(_src)=>
     fastAlpha = (2/(fastMA+1))
     slowAlpha = (2/(slowMA+1))
     sc = pow( er * (fastAlpha - slowAlpha ) + slowAlpha, 2)
-    kama = nz(kama[1]) + sc * (_src - nz(kama[1]))
+    kama = 0.0
+    kama := nz(kama[1]) + sc * (close - nz(kama[1]))
 //KAMA
 
 sv = change(close,1) > 0 ? volume : -volume
