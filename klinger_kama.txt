@@ -7,7 +7,7 @@
 //ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
 //contact: bucket@mailbox.org
 
-study(title="Klinger KAMA", shorttitle="Klinger KAMA [Yield]", precision=2)
+study(title="Klinger KAMA", shorttitle="Klinger KAMA", precision=0)
 showxo = input(false, type=bool, title="Show 0 crossings?")
 showhist = input(false, type=bool, title="Show histogram?")
 
@@ -40,26 +40,31 @@ fast = alma(sv, fastp, offset, sigma)
 slow = kama(sv)
 kvo_line = fast - slow
 
+ma0 = alma(kvo_line,3, offsets, sigmas)
 ma1 = alma(kvo_line,5, offsets, sigmas)
 ma2 = alma(kvo_line,8, offsets, sigmas)
 ma3 = alma(kvo_line,13, offsets, sigmas)
 ma4 = alma(kvo_line,21, offsets, sigmas)
 ma5 = alma(kvo_line,34, offsets, sigmas)
 ma6 = alma(kvo_line,55, offsets, sigmas)
-ma7 = alma(kvo_line,89, offsets, sigmas)
-signal = (ma1+ma2+ma3+ma4+ma5+ma6+ma7)/7
+signal = (ma0+ma1+ma2+ma3+ma4+ma5+ma6)/7
 
 hist = kvo_line - signal
 
 baseline = 0
-crimson = #DC143C
-steelblue = #4682B4
-forestgreen = #228B22
-darkgray = #A9A9A9
-darkorange = #FF8C00
-cyan = #00FFFF
-orange_red = #FF4500
+//histogram colors red
+color1 = #800000
+color2 = #CD5C5C
+//histogram colors green
+color3 = #006400
+color4 = #3CB371
 
+//klinger colors
+color5 = #FF0000
+color6 = #00FF00
+
+//signal color
+color7 = #FF8C00
 abovezero = crossover(kvo_line, 0)
 belowzero = crossunder(kvo_line, 0)
 isnegative = kvo_line < 0
@@ -73,18 +78,17 @@ histweak = change(hist,1) <= 0
 histnegative = hist < 0
 histpositive = hist >= 0
 
-kvo_color = histnegative and histstrong ? maroon : histnegative and histweak ? crimson : histpositive and histstrong ? lime : forestgreen
+kvo_color = histnegative and histstrong ? color1 : histnegative and histweak ? color2 : histpositive and histstrong ? color4 : color3
 
 kvo = kvo_line
-hcolor = hist > 0 ? lime : maroon
-xcolor = kvo_line < 0 ? crimson : forestgreen
+xcolor = kvo_line < signal ? color5 : color6
 crossing_u = crossover(kvo_line, 0)
 crossing_d = crossunder(kvo_line, 0)
 
 hline(0, 'Zero', linestyle=dashed, linewidth=1, color=#7B68EE, editable=false)
 plot(showhist ? hist : na, color = kvo_color, transp=0, linewidth=4, title="Klinger Histogram", editable=true, style=histogram)
 plot(kvo, color = xcolor, transp=0, linewidth=2, title="Klinger Volume", editable=true, style=line)
-plot(signal, color = darkorange, transp=0, linewidth=2, title="Signal", editable=true)
+plot(signal, color = color7, transp=0, linewidth=2, title="Signal", editable=true)
 
-plotshape(showxo ? crossing_u : na, title="Dot mark Up", style=shape.arrowup, location=location.top, color=forestgreen, transp=0, size=size.tiny, editable=false)
-plotshape(showxo ? crossing_d : na, title="Dot mark Down", style=shape.arrowdown, location=location.bottom, color=crimson, transp=0, size=size.tiny, editable=false)
+plotshape(showxo ? crossing_u : na, title="Dot mark Up", style=shape.arrowup, location=location.top, color=color6, transp=0, size=size.tiny, editable=false)
+plotshape(showxo ? crossing_d : na, title="Dot mark Down", style=shape.arrowdown, location=location.bottom, color=color5, transp=0, size=size.tiny, editable=false)
