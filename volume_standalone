@@ -1,4 +1,4 @@
-//@version=2
+//@version=3
 //The files in this repository are created by me and provided under the MIT License
 //located at https://github.com/yield65/tradingview/blob/master/LICENSE
 //If you find them useful please consider making a donation, thank you.
@@ -7,14 +7,12 @@
 //ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
 //contact: bucket@mailbox.org
 
-
 study("Volume Standalone", overlay=false, precision=0)
 src = volume
 length = input(8, title="Fast trend", step=1, minval=1)
 longlen = input(34, title="Slow trend", step=1, minval=1)
-offset = input(0.85, step=0.05, minval=0.05, title="Offset")
-sigma = input(6, step=1, minval=1, title="Sigma")
-
+offsets = input(0.75, step=0.05, minval=0.05, title="Offset")
+sigmas = input(4, step=1, minval=1, title="Sigma")
 
 hullma(_src, _length)=>
     _return = wma((2 * wma(_src, _length / 2)) - wma(_src, _length), round(sqrt(_length)))
@@ -29,8 +27,18 @@ er = change/volatility
 fastAlpha = (2/(fastMA+1))
 slowAlpha = (2/(slowMA+1))
 sc = pow( er * (fastAlpha - slowAlpha ) + slowAlpha, 2)
-kama = nz(kama[1]) + sc * (src - nz(kama[1]))
+kama = 0.0
+kama := nz(kama[1]) + sc * (src - nz(kama[1]))
 //KAMA
+
+ma0 = alma(volume,3, offsets, sigmas)
+ma1 = alma(volume,5, offsets, sigmas)
+ma2 = alma(volume,8, offsets, sigmas)
+ma3 = alma(volume,13, offsets, sigmas)
+ma4 = alma(volume,21, offsets, sigmas)
+ma5 = alma(volume,34, offsets, sigmas)
+ma6 = alma(volume,55, offsets, sigmas)
+ribbon = (ma0+ma1+ma2+ma3+ma4+ma5+ma6)/7
 
 lowvol = #DC143C
 hivol = #228B22
@@ -39,5 +47,5 @@ almacolor = #491CBB
 palette = change(volume, 1) >= 0 ? hivol : lowvol
 
 plot(src, style=histogram, linewidth=4,color=palette, transp=30)
-plot(alma(src, length, offset,sigma), style=line, linewidth=2,color=lime, transp=0, title="ALMA")
+plot(ribbon, style=line, linewidth=2,color=lime, transp=0, title="Ribbon Signal")
 plot(kama, style=line, linewidth=2,color=kamacolor, transp=0, title="KAMA")
