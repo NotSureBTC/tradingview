@@ -1,0 +1,49 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: 33932ckE7i3oAQZxxSgLcvmbn8RAgTc2tk
+//ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
+//contact: bucket@mailbox.org
+
+study(title="PVO v2", shorttitle="PVO v2", precision=0)
+shortlen = input(5, minval=1, title="Short Period")
+longlen = input(21, minval=1, title="Long Period")
+smooth = input(0, title="Hull smooth", minval=0, step=1)
+
+hullma(_src, _length)=>
+    _return = wma(2*wma(_src, _length/2)-wma(_src, _length), round(sqrt(_length)))
+
+offset = input(0.75, step=0.05, minval=0, maxval=1)
+sigma = input(4, step=1, minval=1)
+
+offsets = input(0.85, step=0.05, minval=0, maxval=1)
+sigmas = input(6, step=1, minval=1)
+
+//Default MA is EMA
+short = alma(volume, shortlen, offset, sigma)
+long =  alma(volume, longlen, offset, sigma)
+
+osc_line = 100 * (short - long) / long
+osc = smooth > 0 ? hullma(osc_line, smooth) : osc_line
+ma0 = alma(osc_line,3, offsets, sigmas)
+ma1 = alma(osc_line,5, offsets, sigmas)
+ma2 = alma(osc_line,8, offsets, sigmas)
+ma3 = alma(osc_line,13, offsets, sigmas)
+ma4 = alma(osc_line,21, offsets, sigmas)
+ma5 = alma(osc_line,34, offsets, sigmas)
+ma6 = alma(osc_line,55, offsets, sigmas)
+osc_signal = (ma0+ma1+ma2+ma3+ma4+ma5+ma6)/7
+
+hist = osc - osc_signal
+
+hivol = #004EBF
+lowvol = #D200BF
+signal = #E58600
+
+osc_color = osc < 0 ? lowvol : hivol
+
+plot(osc, color=osc_color, linewidth=2, transp=0, style=line, editable=true, title="PVO")
+plot(osc_signal, color=yellow, linewidth=2, transp=0, style=line, editable=true, title="PVO Signal")
+hline(0, 'Zero', linestyle=dashed, linewidth=1, color=#7B68EE, editable=false)
