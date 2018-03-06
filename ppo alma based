@@ -1,0 +1,55 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: 33932ckE7i3oAQZxxSgLcvmbn8RAgTc2tk
+//ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
+//contact: bucket@mailbox.org
+
+study(title="PPO ALMA", precision=0)
+shortlen = input(5, minval=1, title="Custom Short Lenght")
+longlen = input(21, minval=1, title="Custom Long Lenght")
+showhist = input(false, type=bool, title="Show Histogram?")
+showxo = input(false, type=bool, title="Show crossings?")
+
+offset = input(0.75, step=0.05, minval=0, maxval=1)
+sigma = input(4, step=1, minval=1)
+
+offsets = input(0.85, step=0.05, minval=0, maxval=1)
+sigmas = input(6, step=1, minval=1)
+
+price = close
+
+short = alma(price, shortlen, offset, sigma)
+long = alma(price, longlen, offset, sigma)
+osc = 100 * (short - long) / long
+
+ma0 = alma(osc,3, offsets, sigmas)
+ma1 = alma(osc,5, offsets, sigmas)
+ma2 = alma(osc,8, offsets, sigmas)
+ma3 = alma(osc,13, offsets, sigmas)
+ma4 = alma(osc,21, offsets, sigmas)
+ma5 = alma(osc,34, offsets, sigmas)
+ma6 = alma(osc,55, offsets, sigmas)
+osc_signal = (ma0+ma1+ma2+ma3+ma4+ma5+ma6)/7
+osc_hist = osc - osc_signal
+
+belowsignal = osc <= osc_signal
+longentry = crossover(osc, osc_signal)
+shortentry = crossunder(osc, osc_signal)
+
+forestgreen = #228B22
+crimson = #DC143C
+darkorange = #FF8C00
+
+ppocolorh = belowsignal and osc_hist >= osc_hist[1] ? maroon : belowsignal and osc_hist < osc_hist[1] ? crimson : osc_hist < osc_hist[1] ? forestgreen : lime
+osc_color = belowsignal ? crimson : forestgreen
+
+plot(showhist ? osc_hist : na, color=ppocolorh, style=histogram, linewidth=4, transp=0, editable=false, title="Histogram")
+plot(osc_signal, color=darkorange, linewidth=2, transp=0, style=line, editable=true, title="AVG Signal")
+hline(0, 'Zero', linestyle=dashed, linewidth=1, color=#7B68EE, editable=false)
+plot(osc, color=osc_color, linewidth=2, transp=0, style=line, editable=true, title="PPO")
+
+plotshape(showxo ? longentry : na, title="Dot mark Up", style=shape.arrowup, location=location.top, color=forestgreen, transp=0, size=size.tiny, editable=false)
+plotshape(showxo ? shortentry : na, title="Dot mark Down", style=shape.arrowdown, location=location.bottom, color=crimson, transp=0, size=size.tiny, editable=false)
