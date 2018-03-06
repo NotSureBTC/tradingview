@@ -7,7 +7,7 @@
 //ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
 //contact: bucket@mailbox.org
 
-study("UltrafastParrot TSI", shorttitle="Parrot TSI", precision=1)
+study("UltrafastParrot TSI", shorttitle="UltrafastParrot TSI", precision=1)
 short = input(title="Short ALMA Length", type=integer, defval=5)
 long = input(title="Long ALMA Length", type=integer, defval=21)
 showhist = input(false, type=bool, title="Show Histogram?")
@@ -31,14 +31,14 @@ double_smoothed_abs_pc = double_smooth(abs(pc), long, short)
 tsi_line = 100 * (double_smoothed_pc / double_smoothed_abs_pc)
 tsi = tsi_line
 
+ma0 = alma(tsi,3, offsets, sigmas)
 ma1 = alma(tsi,5, offsets, sigmas)
 ma2 = alma(tsi,8, offsets, sigmas)
 ma3 = alma(tsi,13, offsets, sigmas)
 ma4 = alma(tsi,21, offsets, sigmas)
 ma5 = alma(tsi,34, offsets, sigmas)
 ma6 = alma(tsi,55, offsets, sigmas)
-ma7 = alma(tsi,89, offsets, sigmas)
-tsi_signal = (ma1+ma2+ma3+ma4+ma5+ma6+ma7)/7
+tsi_signal = (ma0+ma1+ma2+ma3+ma4+ma5+ma6)/7
 tsi_hist = tsi_line - tsi_signal
 forestgreen = #228B22
 crimson = #DC143C
