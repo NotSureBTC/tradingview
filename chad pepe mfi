@@ -1,0 +1,38 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: 33932ckE7i3oAQZxxSgLcvmbn8RAgTc2tk
+//ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
+//contact: bucket@mailbox.org
+
+study(title="Chad Pepe MFI", shorttitle="Chad Pepe MFI", precision=0)
+length = input(title="Length", type=integer, defval=8, minval=1, maxval=2000)
+src = hlc3
+upper = sum(volume * (change(src) <= 0 ? 0 : src), length)
+lower = sum(volume * (change(src) >= 0 ? 0 : src), length)
+mf = rsi(upper, lower)
+
+offset = 0.75
+sigma = 4
+
+ftrb1 = alma(mf, 3, offset, sigma)
+ftrb2 = alma(mf, 5, offset, sigma)
+ftrb3 = alma(mf, 8, offset, sigma)
+ftrb4 = alma(mf, 10, offset, sigma)
+ftrb5 = alma(mf, 12, offset, sigma)
+ftrb6 = alma(mf, 18, offset, sigma)
+signal = (ftrb1+ftrb2+ftrb3+ftrb4+ftrb5+ftrb6)/6
+
+strb1 = alma(mf, 21, offset, sigma)
+strb2 = alma(mf, 34, offset, sigma)
+signal2 = (strb1+strb2)/2
+
+
+plot(signal, color=orange, transp=0, linewidth=2, title="Signal")
+plot(signal2, color=#9800FF, transp=0, linewidth=2, title="Signal Slow")
+plot(mf, color=aqua, transp=0, linewidth=2, title="Money Flow Index")
+hline(80, title="Overbought", color=#c0c0c0, title="Overbought")
+hline(50, title="Middle", color=#c0c0c0, title="Middle")
+hline(20, title="Oversold", color=#c0c0c0, title="Oversold")
