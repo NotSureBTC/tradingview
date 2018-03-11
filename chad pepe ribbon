@@ -1,0 +1,47 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: 33932ckE7i3oAQZxxSgLcvmbn8RAgTc2tk
+//ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
+//contact: bucket@mailbox.org
+
+study("Chad Pepe Ribbon", precision=0, overlay=true)
+
+lw = input(2, step=1, maxval=4, minval=1, title="Linewidth")
+src = close
+offset = 0.75
+sigma = 4
+
+//fast term ribbon 3, 5, 8, 10, 12, and 18
+ftrb1 = alma(src, 3, offset, sigma)
+ftrb2 = alma(src, 5, offset, sigma)
+ftrb3 = alma(src, 8, offset, sigma)
+ftrb4 = alma(src, 10, offset, sigma)
+ftrb5 = alma(src, 12, offset, sigma)
+ftrb6 = alma(src, 18, offset, sigma)
+sline1 = (ftrb1+ftrb2+ftrb3+ftrb4+ftrb5+ftrb6)/6
+
+//slow term ribbon 30, 35, 40, 45, 50, and 60
+strb1 = alma(src, 30, offset, sigma)
+strb2 = alma(src, 35, offset, sigma)
+strb3 = alma(src, 40, offset, sigma)
+strb4 = alma(src, 45, offset, sigma)
+strb5 = alma(src, 50, offset, sigma)
+strb6 = alma(src, 60, offset, sigma)
+sline2 = (strb1+strb2+strb3+strb4+strb5+strb6)/6
+
+plot(ftrb1, title='ALMA 03', color=#00FFFF, style=line, linewidth=lw, transp=0)
+plot(ftrb2, title='ALMA 05', color=#00CCCC, style=line, linewidth=lw, transp=0)
+plot(ftrb3, title='ALMA 08', color=#00A3A3, style=line, linewidth=lw, transp=0)
+plot(ftrb4, title='ALMA 10', color=#008282, style=line, linewidth=lw, transp=0)
+plot(ftrb5, title='ALMA 12', color=#006868, style=line, linewidth=lw, transp=0)
+plot(ftrb6, title='ALMA 18', color=#005353, style=line, linewidth=lw, transp=0)
+
+plot(strb1, title='ALMA 30', color=#9800FF, style=line, linewidth=lw, transp=0)
+plot(strb2, title='ALMA 35', color=#AD33FF, style=line, linewidth=lw, transp=0)
+plot(strb3, title='ALMA 40', color=#BD5CFF, style=line, linewidth=lw, transp=0)
+plot(strb4, title='ALMA 45', color=#CA7DFF, style=line, linewidth=lw, transp=0)
+plot(strb5, title='ALMA 50', color=#D597FF, style=line, linewidth=lw, transp=0)
+plot(strb6, title='ALMA 60', color=#DDACFF, style=line, linewidth=lw, transp=0)
