@@ -70,10 +70,10 @@ fill(p1, p2, color = senkouA > senkouB ? bullcloud : bearcloud, transp=80, title
 plot(chikou_d ? chikouline : na, title='Chikou Span', linewidth=2, offset=-displacement, color=darkorange, transp=0, editable=true)
 
 //ALMA MAs
-length0 = input(5)
-length1 = input(21)
+length0 = input(13)
+length1 = input(34)
 length2 = input(55)
-length3 = input(144)
+length3 = input(89)
 ma0 = alma(close, length0, offset, sigma)
 ma1 = alma(close, length1, offset, sigma)
 ma2 = alma(close, length2, offset, sigma)
