@@ -9,7 +9,7 @@
 
 study("Chad Pepe Ribbon", precision=0, overlay=true)
 
-lw = input(2, step=1, maxval=4, minval=1, title="Linewidth")
+lw = input(1, step=1, maxval=4, minval=1, title="Linewidth")
 src = close
 offset = 0.75
 sigma = 4
@@ -21,7 +21,6 @@ ftrb3 = alma(src, 8, offset, sigma)
 ftrb4 = alma(src, 10, offset, sigma)
 ftrb5 = alma(src, 12, offset, sigma)
 ftrb6 = alma(src, 18, offset, sigma)
-sline1 = (ftrb1+ftrb2+ftrb3+ftrb4+ftrb5+ftrb6)/6
 
 //slow term ribbon 30, 35, 40, 45, 50, and 60
 strb1 = alma(src, 30, offset, sigma)
@@ -30,8 +29,11 @@ strb3 = alma(src, 40, offset, sigma)
 strb4 = alma(src, 45, offset, sigma)
 strb5 = alma(src, 50, offset, sigma)
 strb6 = alma(src, 60, offset, sigma)
-sline2 = (strb1+strb2+strb3+strb4+strb5+strb6)/6
 
+fbullish = ftrb1 > ftrb2 and ftrb2 > ftrb3 and ftrb3 > ftrb4 and ftrb4 > ftrb5 and ftrb5 > ftrb6 and ftrb6 > strb1 and strb1 > strb2 and strb2 > strb3 and strb3 > strb4 and strb4 > strb5 and strb5 > strb6
+fbearish = ftrb1 < ftrb2 and ftrb2 < ftrb3 and ftrb3 < ftrb4 and ftrb4 < ftrb5 and ftrb5 < ftrb6 and ftrb6 < strb1 and strb1 < strb2 and strb2 < strb3 and strb3 < strb4 and strb4 < strb5 and strb5 < strb6
+
+bgcolor(fbullish ? white : fbearish ? orange : na, transp = 70 )
 plot(ftrb1, title='ALMA 03', color=#00FFFF, style=line, linewidth=lw, transp=0)
 plot(ftrb2, title='ALMA 05', color=#00CCCC, style=line, linewidth=lw, transp=0)
 plot(ftrb3, title='ALMA 08', color=#00A3A3, style=line, linewidth=lw, transp=0)
