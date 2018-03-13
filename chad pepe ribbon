@@ -1,4 +1,4 @@
-a  //@version=3
+//@version=3
 //The files in this repository are created by me and provided under the MIT License
 //located at https://github.com/yield65/tradingview/blob/master/LICENSE
 //If you find them useful please consider making a donation, thank you.
@@ -14,7 +14,6 @@ showvwap = input(false, title="Show VWAP?")
 src = close
 offset = 0.75
 sigma = 4
-
 
 //fast term ribbon 3, 5, 8, 10, 12, and 18
 ftrb1 = alma(src, 3, offset, sigma)
