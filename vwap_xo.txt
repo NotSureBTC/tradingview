@@ -22,7 +22,7 @@ hullma(_src, _length)=>
     _hullma = wma((2 * wma(_src, _length / 2)) - wma(_src, _length), round(sqrt(_length)))
 
 ma1 = psource ? vwma(close, ma1len) : src
-vwapxo = ma1 - vwap(close)
+vwapxo = isintraday ? ma1 - vwap(close) : 0
 mainline = smoothp > 0 ? hullma(vwapxo, smoothp) : vwapxo
 sline0 = alma(vwapxo, 3, offset, sigma)
 
@@ -64,8 +64,8 @@ isstrong = change(hist,1) > 0
 isweak = change(hist,1) <= 0
 
 hline(0, 'Zero', linestyle=dashed, linewidth=1, color=#7B68EE, editable=false)
-plot(strend ? sline2 : na, style = line, color=#E500BB , linewidth=2, transp=0, title="Long MA")
-plot(strend ? sline1 : na, style = line, color=#1A9AB2 , linewidth=2, transp=0, title="Short MA")
-plot(mainline, style=line, color=xcolor, linewidth=2, transp=0,title="Price trend")
-plotshape(showxo ? slinexobull : na, title="Bullish XO", style=shape.labelup, location=location.bottom, color=forestgreen, transp=0, size=size.tiny, editable=false)
-plotshape(showxo ? slinexobear : na, title="Bearish XO", style=shape.labeldown, location=location.top, color=crimson, transp=0, size=size.tiny, editable=false)
+plot(strend and isintraday ? sline2 : na, style = line, color=#E500BB , linewidth=2, transp=0, title="Long MA")
+plot(strend and isintraday ? sline1 : na, style = line, color=#1A9AB2 , linewidth=2, transp=0, title="Short MA")
+plot(isintraday ? mainline : na, style=line, color=xcolor, linewidth=2, transp=0,title="Price trend")
+plotshape(showxo and isintraday ? slinexobull : na, title="Bullish XO", style=shape.labelup, location=location.bottom, color=forestgreen, transp=0, size=size.tiny, editable=false)
+plotshape(showxo and isintraday ? slinexobear : na, title="Bearish XO", style=shape.labeldown, location=location.top, color=crimson, transp=0, size=size.tiny, editable=false)
