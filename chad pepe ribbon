@@ -1,4 +1,4 @@
-//@version=3
+a  //@version=3
 //The files in this repository are created by me and provided under the MIT License
 //located at https://github.com/yield65/tradingview/blob/master/LICENSE
 //If you find them useful please consider making a donation, thank you.
@@ -10,9 +10,11 @@
 study("Chad Pepe Ribbon", precision=0, overlay=true)
 
 lw = input(1, step=1, maxval=4, minval=1, title="Linewidth")
+showvwap = input(false, title="Show VWAP?")
 src = close
 offset = 0.75
 sigma = 4
+
 
 //fast term ribbon 3, 5, 8, 10, 12, and 18
 ftrb1 = alma(src, 3, offset, sigma)
@@ -47,3 +49,4 @@ plot(strb3, title='ALMA 40', color=#BD5CFF, style=line, linewidth=lw, transp=0)
 plot(strb4, title='ALMA 45', color=#CA7DFF, style=line, linewidth=lw, transp=0)
 plot(strb5, title='ALMA 50', color=#D597FF, style=line, linewidth=lw, transp=0)
 plot(strb6, title='ALMA 60', color=#DDACFF, style=line, linewidth=lw, transp=0)
+plot(showvwap and isintraday ? vwap(close) : na, color=yellow, linewidth=2, transp=0)
