@@ -9,7 +9,9 @@
 
 study("Chad Pepe Ribbon", precision=0, overlay=true)
 
-lw = input(1, step=1, maxval=4, minval=1, title="Linewidth")
+lw1 = input(1, step=1, maxval=4, minval=1, title="Width 1st Group")
+lw2 = input(1, step=1, maxval=4, minval=1, title="Width 2nd Group")
+trp = input(30, step=5, minval=0, maxval=100, title="Transparency")
 showvwap = input(false, title="Show VWAP?")
 src = close
 offset = 0.75
@@ -35,17 +37,17 @@ fbullish = ftrb1 > ftrb2 and ftrb2 > ftrb3 and ftrb3 > ftrb4 and ftrb4 > ftrb5 a
 fbearish = ftrb1 < ftrb2 and ftrb2 < ftrb3 and ftrb3 < ftrb4 and ftrb4 < ftrb5 and ftrb5 < ftrb6 and ftrb6 < strb1 and strb1 < strb2 and strb2 < strb3 and strb3 < strb4 and strb4 < strb5 and strb5 < strb6
 
 bgcolor(fbullish ? white : fbearish ? orange : na, transp = 70 )
-plot(ftrb1, title='ALMA 03', color=#00FFFF, style=line, linewidth=lw, transp=0)
-plot(ftrb2, title='ALMA 05', color=#00CCCC, style=line, linewidth=lw, transp=0)
-plot(ftrb3, title='ALMA 08', color=#00A3A3, style=line, linewidth=lw, transp=0)
-plot(ftrb4, title='ALMA 10', color=#008282, style=line, linewidth=lw, transp=0)
-plot(ftrb5, title='ALMA 12', color=#006868, style=line, linewidth=lw, transp=0)
-plot(ftrb6, title='ALMA 18', color=#005353, style=line, linewidth=lw, transp=0)
+plot(ftrb1, title='ALMA 03', color=#0000FF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb2, title='ALMA 05', color=#0033FF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb3, title='ALMA 08', color=#0065FF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb4, title='ALMA 10', color=#0099FF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb5, title='ALMA 12', color=#00CBFF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb6, title='ALMA 18', color=#00FFFF, style=line, linewidth=lw1, transp=trp, editable=false)
 
-plot(strb1, title='ALMA 30', color=#9800FF, style=line, linewidth=lw, transp=0)
-plot(strb2, title='ALMA 35', color=#AD33FF, style=line, linewidth=lw, transp=0)
-plot(strb3, title='ALMA 40', color=#BD5CFF, style=line, linewidth=lw, transp=0)
-plot(strb4, title='ALMA 45', color=#CA7DFF, style=line, linewidth=lw, transp=0)
-plot(strb5, title='ALMA 50', color=#D597FF, style=line, linewidth=lw, transp=0)
-plot(strb6, title='ALMA 60', color=#DDACFF, style=line, linewidth=lw, transp=0)
+plot(strb1, title='ALMA 30', color=#9800FF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb2, title='ALMA 35', color=#AD33FF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb3, title='ALMA 40', color=#BD5CFF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb4, title='ALMA 45', color=#CA7DFF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb5, title='ALMA 50', color=#D597FF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb6, title='ALMA 60', color=#DDACFF, style=line, linewidth=lw2, transp=trp, editable=false)
 plot(showvwap and isintraday ? vwap(close) : na, color=yellow, linewidth=2, transp=0)
