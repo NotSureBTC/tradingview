@@ -22,25 +22,33 @@ displacement = 21
 chikou_d = input(false, title="Display Chikou?")
 maxo = input(false, title="Show ALMAs?")
 display_ma=input(false, "Display EMA Fibs?", type=bool)
+display_bitmex_futures=input(false, "Display BMX QTLY?", type=bool)
 display_bb=input(false, "Display BBs?", type=bool)
 new_bb = input(true, "Display mod BB?", type=bool)
-display_bitmex=input(false, "Display XBT?", type=bool)
+bblen = input(21, "BB Length?", step=1, minval=1)
+
+//Note: change and update futures accordingly
+bitmex_futures=security("BITMEX:XBTM18", period, close)
 
 coinbase = security("COINBASE:BTCUSD", period, close)
 bitstamp = security("BITSTAMP:BTCUSD", period, close)
-aids18 = security("BITMEX:XBTH18", period, close)
-index = alma(aids18, 5, 0.75, 4)
 offset = input(0.75, title="ALMA offset", step=0.05)
 sigma = input(4, title="ALMA sigma", step=1)
 
-hullma(_src, _length)=>
-    _return = wma((2 * wma(_src, _length / 2)) - wma(_src, _length), round(sqrt(_length)))
+//ribbon futures
+qtly0 = bitmex_futures
+qtly1 = alma(bitmex_futures, 3, 0.85,6)
+qtly2 = alma(bitmex_futures, 5, 0.85,6)
+qtly3 = alma(bitmex_futures, 8, 0.85,6)
+ribbon_qtly = avg(qtly0,qtly1,qtly2,qtly3)
+plot(display_bitmex_futures ? ribbon_qtly : na, color = yellow, linewidth = 3, title='XBTFutures', transp=0)
+//end ribbon futures
 
 //====BB====
 bbcolor = white
 bb_smooth = 4
-bb_mid = new_bb ? alma(close, 21, offset, sigma) : sma(close, 20)
-dev = new_bb ? 2.0 * stdev(close, 21) : 2.0 * stdev(close, 20)
+bb_mid = new_bb ? alma(close, bblen, offset, sigma) : sma(close, 20)
+dev = new_bb ? 2.0 * stdev(close, bblen) : 2.0 * stdev(close, 20)
 bb_top = bb_mid + dev
 bb_low = bb_mid - dev
 //display_bb
@@ -78,11 +86,51 @@ ma0 = alma(close, length0, offset, sigma)
 ma1 = alma(close, length1, offset, sigma)
 ma2 = alma(close, length2, offset, sigma)
 ma3 = alma(close, length3, offset, sigma)
-
+maxobull = close > ma0 and ma0 > ma1 and ma1 > ma2 and ma2 > ma3
+maxobear = close < ma0 and ma0 < ma1 and ma1 < ma2 and ma2 < ma3
 plot(maxo ? ma0 : na, color=aqua, transp=0, linewidth=2, editable=false)
 plot(maxo ? ma1 : na, color=yellow, transp=0, linewidth=2, editable=false)
-plot(maxo ? ma2 : na, color=red, transp=0, linewidth=2, editable=false)
-plot(maxo ? ma3 : na, color=fuchsia, transp=0, linewidth=2, editable=false)
+plot(maxo ? ma2 : na, color=fuchsia, transp=0, linewidth=2, editable=false)
+plot(maxo ? ma3 : na, color=red, transp=0, linewidth=2, editable=false)
+
+//Fib EMAs
+
+ma1_color = #99FFFF
+ma2_color = #7BEBB3
+ma3_color = #61D861
+ma4_color = #87C54A
+ma5_color = #B2B235
+ma6_color = #9F6123
+ma7_color = #8C1515
+ma8_color = #790941
+ma9_color = #660066
+
+plot(display_ma ? ema(close,8) : na, color = ma1_color, linewidth = 2, title='EMA 8', transp=0)
+plot(display_ma ? ema(close,13) : na, color = ma2_color, linewidth = 2, title='EMA 13', transp=0)
+plot(display_ma ? ema(close,21) : na, color = ma3_color, linewidth = 2, title='EMA 21', transp=0)
+plot(display_ma ? ema(close,34) : na, color = ma4_color, linewidth = 2, title='EMA 34', transp=0)
+plot(display_ma ? ema(close,55) : na, color = ma5_color, linewidth = 2, title='EMA 55', transp=0)
+plot(display_ma ? ema(close,89) : na, color = ma6_color, linewidth = 2, title='EMA 89', transp=0)
+plot(display_ma ? ema(close,144) : na, color = ma7_color, linewidth = 2, title='EMA 144', transp=0)
+plot(display_ma ? ema(close,233) : na, color = ma8_color, linewidth = 2, title='EMA 233', transp=0)
+plot(display_ma ? ema(close,377) : na, color = ma9_color, linewidth = 2, title='EMA 377', transp=0)
+//ALMA MAs
+length0 = input(13)
+length1 = input(34)
+length2 = input(55)
+length3 = input(89)
+ma0 = alma(close, length0, offset, sigma)
+ma1 = alma(close, length1, offset, sigma)
+ma2 = alma(close, length2, offset, sigma)
+ma3 = alma(close, length3, offset, sigma)
+maxobull = close > ma0 and ma0 > ma1 and ma1 > ma2 and ma2 > ma3
+maxobear = close < ma0 and ma0 < ma1 and ma1 < ma2 and ma2 < ma3
+plot(maxo ? ma0 : na, color=aqua, transp=0, linewidth=2, editable=false)
+plot(maxo ? ma1 : na, color=yellow, transp=0, linewidth=2, editable=false)
+plot(maxo ? ma2 : na, color=fuchsia, transp=0, linewidth=2, editable=false)
+plot(maxo ? ma3 : na, color=red, transp=0, linewidth=2, editable=false)
+//plotshape(maxo and maxobull ? maxobull : na, title="Dot mark Up", style=shape.circle, location=location.top, color=lime, transp=0, size=size.tiny, editable=false)
+//plotshape(maxo and maxobear ? maxobear : na, title="Dot mark Down", style=shape.circle, location=location.bottom, color=red, transp=0, size=size.tiny, editable=false)
 
 //Fib EMAs
 
