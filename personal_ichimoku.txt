@@ -41,7 +41,7 @@ qtly1 = alma(bitmex_futures, 3, 0.85,6)
 qtly2 = alma(bitmex_futures, 5, 0.85,6)
 qtly3 = alma(bitmex_futures, 8, 0.85,6)
 ribbon_qtly = avg(qtly0,qtly1,qtly2,qtly3)
-plot(display_bitmex_futures ? ribbon_qtly : na, color = yellow, linewidth = 3, title='XBTFutures', transp=0)
+plot(display_bitmex_futures ? ribbon_qtly : na, color = #3c78d8, linewidth = 3, title='XBTFutures', transp=0)
 //end ribbon futures
 
 //====BB====
