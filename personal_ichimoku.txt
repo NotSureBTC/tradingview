@@ -24,8 +24,8 @@ maxo = input(false, title="Show ALMAs?")
 display_ma=input(false, "Display EMA Fibs?", type=bool)
 display_bitmex_futures=input(false, "Display BMX QTLY?", type=bool)
 display_bb=input(false, "Display BBs?", type=bool)
-new_bb = input(true, "Display mod BB?", type=bool)
-bblen = input(21, "BB Length?", step=1, minval=1)
+new_bb = input(false, "Use VWMA for BB?", type=bool)
+bblen = input(20, "BB Length?", step=1, minval=1)
 
 //Note: change and update futures accordingly
 bitmex_futures=security("BITMEX:XBTM18", period, close)
@@ -47,7 +47,7 @@ plot(display_bitmex_futures ? ribbon_qtly : na, color = #3c78d8, linewidth = 3, 
 //====BB====
 bbcolor = white
 bb_smooth = 4
-bb_mid = new_bb ? alma(close, bblen, offset, sigma) : sma(close, 20)
+bb_mid = new_bb ? vwma(close, bblen) : alma(close, bblen, 0.55, 1)
 dev = new_bb ? 2.0 * stdev(close, bblen) : 2.0 * stdev(close, 20)
 bb_top = bb_mid + dev
 bb_low = bb_mid - dev
