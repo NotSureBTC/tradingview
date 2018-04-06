@@ -1,0 +1,54 @@
+//@version=3
+study(title="Chad Pepe Circa WWII", precision=0)
+
+showhist = input(false, type=bool, title="Show Histogram?")
+showxo = input(false, title="Show crossings?")
+src = input(hlc3)
+offsets = 0.85
+sigmas = 6
+
+//fast term ribbon 3, 5, 8, 10, 12, and 18
+ftrb1 = vwma(src, 3)
+ftrb2 = vwma(src, 5)
+ftrb3 = vwma(src, 8)
+ftrb4 = vwma(src, 10)
+ftrb5 = vwma(src, 12)
+ftrb6 = vwma(src, 18)
+short = (ftrb1+ftrb2+ftrb3+ftrb4+ftrb5+ftrb6)/6
+
+//slow term ribbon 30, 35, 40, 45, 50, and 60
+strb1 = vwma(src, 30)
+strb2 = vwma(src, 35)
+strb3 = vwma(src, 40)
+strb4 = vwma(src, 45)
+strb5 = vwma(src, 50)
+strb6 = vwma(src, 60)
+long = (strb1+strb2+strb3+strb4+strb5+strb6)/6
+
+osc = 100 * (short - long) / long
+
+ma0 = alma(osc,3, offsets, sigmas)
+ma1 = alma(osc,5, offsets, sigmas)
+ma2 = alma(osc,8, offsets, sigmas)
+ma3 = alma(osc,13, offsets, sigmas)
+ma4 = alma(osc,21, offsets, sigmas)
+ma5 = alma(osc,34, offsets, sigmas)
+ma6 = alma(osc,55, offsets, sigmas)
+signal = (ma0+ma1+ma2+ma3+ma4+ma5+ma6)/7
+hist = osc - signal
+forestgreen = #228B22
+crimson = #DC143C
+darkorange = #FF8C00
+
+belowsignal = osc <= signal
+ppocolorh = belowsignal and hist >= hist[1] ? maroon : belowsignal and hist < hist[1] ? crimson : hist < hist[1] ? forestgreen : lime
+osc_color = belowsignal ? crimson : forestgreen
+crossing_u = crossover(osc, signal)
+crossing_d = crossunder(osc, signal)
+
+plot(showhist ? hist : na, color=ppocolorh, style=histogram, linewidth=4, transp=0, editable=false, title="Histogram")
+hline(0, 'Zero', linestyle=dashed, linewidth=1, color=#7B68EE, editable=false)
+plot(osc, color=osc_color, linewidth=2, transp=0, style=line, editable=true, title="PePe VWMA")
+plot(signal, linewidth=2, transp=0, style=line, editable=true, color=darkorange, title="Signal")
+plotshape(showxo ? crossing_u : na, title="Dot mark Up", style=shape.arrowup, location=location.top, color=forestgreen, transp=0, size=size.tiny, editable=false)
+plotshape(showxo ? crossing_d : na, title="Dot mark Down", style=shape.arrowdown, location=location.bottom, color=crimson, transp=0, size=size.tiny, editable=false)
