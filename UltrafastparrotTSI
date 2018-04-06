@@ -9,13 +9,13 @@
 
 study("UltrafastParrot TSI", shorttitle="UltrafastParrot TSI", precision=1)
 short = input(title="Short ALMA Length", type=integer, defval=5)
-long = input(title="Long ALMA Length", type=integer, defval=21)
+long = input(title="Long ALMA Length", type=integer, defval=34)
 showhist = input(false, type=bool, title="Show Histogram?")
 shapes = input(false, type=bool, title="Show signal crossings?")
 offset = input(0.85, step=0.05, minval=0.5, title="Fast Offset")
 sigma = input(6, step=1, minval=1, title="Fast Sigma")
-offsetT = input(0.85, step=0.05, minval=0.5, title="Trend Offset")
-sigmaT = input(6, step=1, minval=1, title="Trend Sigma")
+offsetT = input(0.5, step=0.05, minval=0.5, title="Trend Offset")
+sigmaT = input(2, step=1, minval=1, title="Trend Sigma")
 offsets = input(0.85, step=0.05, minval=0.5, title="Signal Offset")
 sigmas = input(6, step=1, minval=1, title="Signal Sigma")
 
