@@ -1,0 +1,61 @@
+//@version=3
+//The files in this repository are created by me and provided under the MIT License
+//located at https://github.com/yield65/tradingview/blob/master/LICENSE
+//If you find them useful please consider making a donation, thank you.
+//Bitcoin: 3F636VrPCdnbfrdP5kS4C6fHWVBffXNKCu
+//Litecoin: 33932ckE7i3oAQZxxSgLcvmbn8RAgTc2tk
+//ETH: 0x53A43EF9E56908A9c868FBf2f1b9DE7B3486FDAF
+//contact: bucket@mailbox.org
+//fix
+
+study("Chad Pepe Top and Bottom", precision=0, overlay=true)
+movelimit = 100
+lw1 = input(1, step=1, maxval=4, minval=1, title="Width 1st Group")
+lw2 = input(1, step=1, maxval=4, minval=1, title="Width 2nd Group")
+trp = input(30, step=5, minval=0, maxval=100, title="Transparency")
+showvwap = input(false, title="Show VWAP?")
+src = close
+offset = 0.75
+sigma = 4
+
+//fast term ribbon 3, 5, 8, 10, 12, and 18
+ftrb1 = alma(src, 3, offset, sigma)
+ftrb2 = alma(src, 5, offset, sigma)
+ftrb3 = alma(src, 8, offset, sigma)
+ftrb4 = alma(src, 10, offset, sigma)
+ftrb5 = alma(src, 12, offset, sigma)
+ftrb6 = alma(src, 18, offset, sigma)
+
+//slow term ribbon 30, 35, 40, 45, 50, and 60
+strb1 = alma(src, 30, offset, sigma)
+strb2 = alma(src, 35, offset, sigma)
+strb3 = alma(src, 40, offset, sigma)
+strb4 = alma(src, 45, offset, sigma)
+strb5 = alma(src, 50, offset, sigma)
+strb6 = alma(src, 60, offset, sigma)
+
+fbullish = ftrb1 > ftrb2 and ftrb2 > ftrb3 and ftrb3 > ftrb4 and ftrb4 > ftrb5 and ftrb5 > ftrb6 and ftrb6 > strb1 and strb1 > strb2 and strb2 > strb3 and strb3 > strb4 and strb4 > strb5 and strb5 > strb6
+fbearish = ftrb1 < ftrb2 and ftrb2 < ftrb3 and ftrb3 < ftrb4 and ftrb4 < ftrb5 and ftrb5 < ftrb6 and ftrb6 < strb1 and strb1 < strb2 and strb2 < strb3 and strb3 < strb4 and strb4 < strb5 and strb5 < strb6
+fast_desc = ftrb1 < ftrb2 and ftrb2 < ftrb3 and ftrb3 < ftrb4 and ftrb4 < ftrb5 and ftrb5 < ftrb6
+slow_desc = strb1 < strb2 and strb2 < strb3 and strb3 < strb4 and strb4 < strb5 and strb5 < strb6
+fast_asc = ftrb1 > ftrb2 and ftrb2 > ftrb3 and ftrb3 > ftrb4 and ftrb4 > ftrb5 and ftrb5 > ftrb6
+slow_asc = strb1 > strb2 and strb2 > strb3 and strb3 > strb4 and strb4 > strb5 and strb5 > strb6
+bgcolor(fast_desc ? #00FF00 : na)
+bgcolor(slow_desc ? #AAFFAA : na)
+bgcolor(fast_asc ? #FF0000 : na)
+bgcolor(slow_asc ? #FFAAAA : na)
+//bgcolor((fbullish and (ftrb1-strb6 < movelimit)) ? white : (fbearish and (strb6-ftrb1 < movelimit)) ? orange : na, transp = 70 )
+plot(ftrb1, title='ALMA 03', color=#0000FF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb2, title='ALMA 05', color=#0033FF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb3, title='ALMA 08', color=#0065FF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb4, title='ALMA 10', color=#0099FF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb5, title='ALMA 12', color=#00CBFF, style=line, linewidth=lw1, transp=trp, editable=false)
+plot(ftrb6, title='ALMA 18', color=#00FFFF, style=line, linewidth=lw1, transp=trp, editable=false)
+
+plot(strb1, title='ALMA 30', color=#9800FF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb2, title='ALMA 35', color=#AD33FF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb3, title='ALMA 40', color=#BD5CFF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb4, title='ALMA 45', color=#CA7DFF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb5, title='ALMA 50', color=#D597FF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(strb6, title='ALMA 60', color=#DDACFF, style=line, linewidth=lw2, transp=trp, editable=false)
+plot(showvwap and isintraday ? vwap(close) : na, color=yellow, linewidth=2, transp=0)
